@@ -1,2 +1,2 @@
 # sasCensusApi
-Custom built SAS macro programs to extract data from the public Census Data API
+Custom built SAS macro programs to extract data from the public Census Data API. These out of the box custom built SAS macro programs atreamline data acquisition and manipulation. They use the metadata supplied by the Census Data API registration to dynamically derive column type conversion and label assignments. As a minimum, Base SAS® Software, version 9.4 Maintenance 4 installation is required to run these macros. There is heavy use of the JSON LIBNAME statement, that was introduced in SAS 9.4 M4, to enable users to associate a libref with a JSON document.
