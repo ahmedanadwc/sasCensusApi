@@ -1,0 +1,1 @@
+Contains static image files
