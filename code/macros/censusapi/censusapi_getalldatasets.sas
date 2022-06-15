@@ -20,13 +20,13 @@
 * <br>
 *
 * @param p_outLibName	The output Library name. 
-*						Default:APILIB. Required
+*			Default:APILIB. Required
 * @param p_outDsName	The output data set name.
-*						Default:_api_all_data. Required
+*			Default:_api_all_data. Required
 * @param p_dataJsonURL	The Data API Data JSON File.
-*						Default:https://api.census.gov/data.json. Required
-* @param p_reportOutputPath	The output pathname.
-*						Default:&g_outputRoot. Required
+*			Default:https://api.census.gov/data.json. Required
+* @param p_reportOutputPath The output pathname.
+*			Default:&g_outputRoot. Required
 ******************************************************
 */
 
@@ -115,15 +115,15 @@
 
 	/* Create consolidated datasets reporting list */
 
-	DATA &p_outLibName..&p_outDsName(DROP=c_is: RENAME=(ordinal_dataset=_ROWID_));
+	DATA &p_outLibName..&p_outDsName(DROP=c_is: trailText RENAME=(ordinal_dataset=_ROWID_));
 
 		SYSECHO "Processing the returned JSON response and generating the &p_outLibName..&p_outDsName output data set";
 
 		if (0) then SET &l_libref..DATASET_C_DATASET(KEEP=ordinal_dataset c_dataset:);
 
 		LENGTH
-			c_geographyLink_html c_variablesLink_html c_examplesLink_html c_groupsLink_html	$200;
-		LENGTH ds_unique_id $25;
+			c_geographyLink_html c_variablesLink_html c_examplesLink_html c_groupsLink_html	BaseURL $200;
+		LENGTH ds_unique_id $25 trailText $13;
 
 		FORMAT ordinal_dataset BEST8.;
 
@@ -153,11 +153,13 @@
 		Microdata_i  = PUT(c_isMicrodata,yn.);
 
 		/* Change the values to represent HTML links */
-		c_geographyLink_html = Tranwrd(STRIP(c_geographyLink),'json','html');
-		c_variablesLink_html = Tranwrd(STRIP(c_variablesLink),'json','html');
-		c_examplesLink_html	 = Tranwrd(STRIP(c_examplesLink),'json','html');
-		c_groupsLink_html	 = Tranwrd(STRIP(c_groupsLink),'json','html');
+		c_geographyLink_html = TRANWRD(STRIP(c_geographyLink),'json','html');
+		c_variablesLink_html = TRANWRD(STRIP(c_variablesLink),'json','html');
+		c_examplesLink_html	 = TRANWRD(STRIP(c_examplesLink),'json','html');
+		c_groupsLink_html	 = TRANWRD(STRIP(c_groupsLink),'json','html');
 		ds_unique_id		 = '_' || STRIP(CATX('_',ordinal_dataset,c_dataset1,PUT(c_vintage,vintage.)));
+		trailText = SCAN(c_examplesLink_html,-1,'/');
+ 		BaseURL = STRIP(TRANWRD(c_examplesLink_html,STRIP(trailText),' '));
 
 		LABEL
 			ordinal_dataset	= 'Dataset _ROWID_'
@@ -184,6 +186,7 @@
 			c_variablesLink_html = 'Variable list (HTML)'
 			c_examplesLink_html = 'Examples list (HTML)'
 			c_groupsLink_html = 'Group list (HTML)'
+			BaseURL           = 'Base URL'
 			;
 	RUN;
 
@@ -192,6 +195,12 @@
 	SYSECHO "Shrinking the &p_outLibName..&p_outDsName data set";
 
 	%etl_shrinkMyData(p_inDsName=&l_outDsName, p_outDsName=&l_outDsName)
+
+	/* Create unique index on the BaseURL column */
+	PROC DATASETS LIB=&p_outLibName NOLIST; 
+		MODIFY &p_outDsName;
+ 		INDEX CREATE BaseURL / NOMISS UNIQUE;
+	QUIT;
 
 	/* Display the Result in Excel Workbook */
 	TITLE "List of all available tables by the Census Data API as of %SYSFUNC(datetime(),datetime20.) ";
