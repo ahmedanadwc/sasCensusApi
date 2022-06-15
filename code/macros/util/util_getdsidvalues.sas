@@ -18,13 +18,18 @@
  * @param p_registryDsName Registration Data Set name. Default:APILIB._API_ALL_DATA
  * @param p_apiBaseUrl	API Base URL for the registered data set
  * @param p_rtrnRowIDMacVarName	Macro variable name to hold the 
- *								associated _ROWID_ value
- * @param p_rtrnUniqueIDMacVarName	Macro variable name to hold the 
- *								associated ds_unique_id value
+ *				associated _ROWID_ value
+ * @param p_rtrnUniqueIDMacVarName Macro variable name to hold the 
+ *				   associated ds_unique_id value
  ******************************************************
  */
 
 %MACRO util_getDsIdValues(p_registryDsName=APILIB._API_ALL_DATA ,p_apiBaseUrl= ,p_rtrnRowIDMacVarName= ,p_rtrnUniqueIDMacVarName=);
+
+	%LOCAL l_lastChar;
+	%let l_lastChar = ;
+	%if ("%SUBSTR(%SYSFUNC(REVERSE(&p_apiBaseUrl)),1,1)" NE "/") %then
+		%let p_apiBaseUrl = &p_apiBaseUrl/;
 
 	PROC SQL NOPRINT;
 		SELECT 
@@ -33,6 +38,6 @@
 		INTO :&p_rtrnUniqueIDMacVarName
 			,:&p_rtrnRowIDMacVarName TRIMMED
 		FROM &p_registryDsName
-			WHERE STRIP(c_examplesLink_html) LIKE "&p_apiBaseUrl%";
+			WHERE BaseURL = "&p_apiBaseUrl";
 	QUIT;
 %MEND util_getDsIdValues;
