@@ -4,7 +4,7 @@
 	;
 
 SYSECHO "Calling the util_getDsIdValues macro to extract the data set's unique ID variables from the API metadata table ";
-%util_getDsIdValues(p_apiBaseUrl=%str(http://api.census.gov/data/2000/dec/sf1) 
+%util_getDsIdValues(p_apiBaseUrl=%str(http://api.census.gov/data/2000/dec/sf1/) 
 ,p_rtrnRowIDMacVarName=g_dsRowId 
 ,p_rtrnUniqueIDMacVarName=g_dsUniqueId)
 
