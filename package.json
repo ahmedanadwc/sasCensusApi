@@ -1,0 +1,17 @@
+{
+  "name": "sasCensusApi",
+  "description": "Custom built SAS macro programs to extract data from the public Census Data API. These out of the box custom built SAS macro programs atreamline data acquisition and manipulation. They use the metadata supplied by the Census Data API registration to dynamically derive column type conversion and label assignments. As a minimum, Base SAS Software, version 9.4 Maintenance 4 installation is required to run these macros. ",
+  "keywords": [
+    "SAS",
+    "CENSUS",
+    "DATA",
+	"API",
+	"Macros"
+  ],
+  "author": "Ahmed Al-Attar <ahmed.al-attar@anadwc.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://core.sasjs.io",
+  "main": "index.js"
+}
