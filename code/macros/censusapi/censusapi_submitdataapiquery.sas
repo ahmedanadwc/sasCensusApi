@@ -1,48 +1,41 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/21/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* This macro
-* 1. Checks the number of requested variables in the 
-* specified apiGetClause, and dynamically re-writes the 
-* API query into one or several %censusapi_getDataApiQueryRspns 
-* macro calls using the chunked query, with a maximum of 50 
-* variables per macro call.
-* 2. Submits these chunked queries in sequence, which inturn 
-* parses out the returned JSON response into SAS Data Sets.
-* 3. Loops through the generated response data sets and merges 
-* them into a single output data set.
-*
-*
-* <br><br>Usage Example:<br>
-* %censusapi_submitDataApiQuery(
-*   p_apiBaseURL=%STR(https://api.census.gov/data/2000/cps/basic/sep?)
-* , p_apiGetClause=%STR(get=PXORIGIN,PRHSPNON,PRDTCOW2,PXMJNUM,PRDTCOW1,PXNLFACT,PULBHSEC,PEDWAVR)
-* , p_apiForClause=%bquote(for=county:*)
-* , p_apiInClause=%bquote(in=state:01,02,21,11&PEEDUCA=39)
-* , p_dsUniqueId=_114_cps_2000
-* , p_outDsName=work.test_query
-* , p_dataApiKey=&g_apiKey
-* , p_maxVarCount=48)
-*
-* <br>
-* @param p_apiBaseURL	The Data API Base URL. Required
-* @param p_apiGetClause The Data API get= Clause. Required
-* @param p_apiForClause The Data API for= Clause. Required
-* @param p_apiInClause  The Data API in= Clause. Optional
-*						depends on the GeoHierarchy requirements
-* @param p_dsUniqueId	Internal Data set Unique ID. Required 
-* @param p_outDsName	The output data set name. Required
-* @param p_dataApiKey	Personal Data API Key. Optional
-* @param p_maxVarCount	Maximum number of variables
-*						per set. Default=50
-******************************************************
-*/
+  @file censusapi_submitdataapiquery.sas
+  @brief Submits queries which inturn parses out the returned 
+  JSON response into SAS data sets
+  @details
+  1. Checks the number of requested variables in the specified apiGetClause 
+  and dynamically re-writes the API query into one or several 
+  %censusapi_getDataApiQueryRspns macro calls using the chunked query with
+  a maximum of 50 variables per macro call.
+  2. Submits these chunked queries in sequence, which inturn parses out the 
+  returned JSON response into SAS data sets.
+  3. Loops through the generated response data sets and merges them into a 
+  single output data set.
+
+      Usage Example:
+      %censusapi_submitDataApiQuery(p_apiBaseURL=%STR(https://api.census.gov/data/2000/cps/basic/sep?)
+        , p_apiGetClause=%STR(get=PXORIGIN,PRHSPNON,PRDTCOW2,PXMJNUM,PRDTCOW1,PXNLFACT,PULBHSEC,PEDWAVR)
+        , p_apiForClause=%bquote(for=county:*)
+        , p_apiInClause=%bquote(in=state:01,02,21,11&PEEDUCA=39)
+        , p_dsUniqueId=_114_cps_2000, p_outDsName=work.test_query
+        , p_dataApiKey=&g_apiKey, p_maxVarCount=48)
+
+  @param [in] p_apiBaseURL= The Data API Base URL. Required
+  @param [in] p_apiGetClause= The Data API get= Clause. Required
+  @param [in] p_apiForClause= The Data API for= Clause. Required
+  @param [in] p_apiInClause= The Data API in= Clause. Optional, depends on the GeoHierarchy requirements
+  @param [in] p_dsUniqueId= Internal Data set Unique ID. Required
+  @param [in] p_outDsName= The output data set name. Required
+  @param [in] p_dataApiKey= Personal Data API Key. Optional
+  @param [in] p_maxVarCount= Maximum number of variables per set. Default=50
+
+  <h4> SAS Macros </h4>
+  @li censusapi_getdataapiqueryrspns.sas
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
 
 %MACRO censusapi_submitDataApiQuery(
   p_apiBaseURL=

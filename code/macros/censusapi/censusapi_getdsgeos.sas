@@ -1,29 +1,26 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/14/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Parses the Data API query geographies illustrated in  
-* the specified geography.json file into SAS Data Set,
-* using PROC HTTP, JSON Library Engine and data step 
-* processing.
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getDsGeos(p_outDsName=WORK._api_ds_all_geos
-* , p_geoJsonURL=%STR(https://api.census.gov/data/2000/dec/sf1/geography.json))
+  @file censusapi_getdsgeos.sas
+  @brief Parses the Data API query geographies illustrated in the specified geography.json file
+  @details
+  Parses the Data API query geographies illustrated in the specified geography.json 
+  file into SAS Data Set using PROC HTTP, JSON Library Engine and data step processing.
 
-* <br>
-*
-* @param p_outDsName	The output data set name. Required
-* @param p_geoJsonURL	The Geography JSON URL. Required
-******************************************************
-*/
+      Usage Example:
+      %censusapi_getDsGeos(p_outDsName=WORK._api_ds_all_geos
+        , p_geoJsonURL=%STR(https://api.census.gov/data/2000/dec/sf1/geography.json))
 
-%MACRO censusapi_getDsGeos(p_outDsName=WORK._api_ds_all_geos, p_geoJsonURL=);
+  @param [in] p_geoJsonURL= The Geography JSON URL. Required
+  @param [in] p_outDsName= The output data set name. Required
+
+  <h4> SAS Macros </h4>
+  @li etl_shrinkmydata.sas
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
+
+%MACRO censusapi_getDsGeos(p_outDsName=, p_geoJsonURL=);
 
 	%LOCAL
 		l_sTime

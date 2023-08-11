@@ -1,28 +1,26 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/20/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Parses the Groups Metadata stored in the specified 
-* groups.json file into SAS Data Set using PROC HTTP 
-* and JSON Library engine.
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getGrpVars(p_outDsName=WORK._api_ds_grps
-* , p_grgVarsJsonURL=%str(https://api.census.gov/data/2000/dec/as/groups/H008.json))
-* <br>
-*
-* @param p_outDsName	 The output data set name. Required
-* @param p_grgVarsJsonURL The Groups JSON URL. Required
-******************************************************
-*/
+  @file censusapi_getgrpvars.sas
+  @brief Parses the Groups Metadata stored in the specified groups.json file
+  @details
+  Parses the Groups Metadata stored in the specified groups.json file 
+  into SAS Data Set using PROC HTTP and JSON Library engine.
 
-%MACRO censusapi_getGrpVars(p_outDsName=WORK._api_grpVars
-, p_grgVarsJsonURL=);
+      Usage Example:
+      %censusapi_getGrpVars(p_outDsName=WORK._api_ds_grps
+        , p_grgVarsJsonURL=%str(https://api.census.gov/data/2000/dec/as/groups/H008.json))
+
+  @param [in] p_outDsName= The output data set name. Required
+  @param p_grgVarsJsonURL= The Groups JSON URL. Required
+
+  <h4> SAS Macros </h4>
+  @li etl_shrinkmydata.sas
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
+
+%MACRO censusapi_getGrpVars(p_outDsName=, p_grgVarsJsonURL=);
 
 	%LOCAL
 		l_sTime

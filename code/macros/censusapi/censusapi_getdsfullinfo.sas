@@ -1,40 +1,43 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/15/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Extracts required JSON & HTML URLs associated with the 
-* specified Data set RowID from the collected tables
-* Metadata data set. 
-* Once these URLs are extracted, it calls
-* relevent macros to parse out the data and generate
-*  - Variables Metadata data set
-*  - Geographies data set
-*  - Examples data set
-* Then an Excel Workbook is generated containing listing
-* of these newly created SAS data sets.
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getDsFullInfo(p_apiListingLibName=APILIB
-* , p_apiListingDsName=_API_ALL_DATA, p_dsRowId=3)
-*
-* <br>
-* @param p_apiListingLibName	The Libname holding the
-*						Datasets Metadata table. 
-*						Default:APILIB. Required
-* @param p_apiListingDsName	The collected tables
-* 						Metadata data set name
-*						Default:_api_all_data. Required
-* @param p_dsRowId		The _ROWID_ value of the 
-*						desired data set. Required
-* @param p_reportOutputPath	The output pathname.
-*						Default:&g_outputRoot. Required
-******************************************************
-*/
+  @file censusapi_getdsfullinfo.sas
+  @brief Extracts required JSON & HTML URLs associated with the specified Data set RowID 
+  from the collected tables Metadata data set.
+  @details
+  Extracts required JSON & HTML URLs associated with the specified Data set RowID 
+  from the collected tables Metadata data set.
+  Once these URLs are extracted, it calls relevent macros to parse out the data and generate
+  - Variables Metadata data set
+  - Geographies data set
+  - Examples data set
+  Then an Excel Workbook is generated containing listing of these newly created SAS data sets.
+
+      Usage Example:
+      %censusapi_getDsFullInfo(p_apiListingLibName=APILIB, p_apiListingDsName=_API_ALL_DATA, p_dsRowId=3)
+
+  @param [in] p_apiListingLibName= The Libname holding the	Datasets Metadata table. Default:APILIB. Required
+  @param [in] p_apiListingDsName= The collected tables Metadata data set name. Default:_api_all_data. Required
+  @param [in] p_dsRowId= The _ROWID_ value of the desired data set. Required
+  @param [in] p_reportOutputPath= The output pathname. Default:&g_outputRoot. Required
+
+  <h4> SAS Macros </h4>
+  @li censusapi_getdsvars.sas
+  @li censusapi_getdsgroups.sas
+  @li censusapi_getdsgeos.sas
+  @li censusapi_getdsexamples.sas
+
+  <h4> Data Inputs </h4>
+  @li APILIB._API_ALL_DATA
+
+  <h4> Data Outputs </h4>
+  @li APILIB.[ds_unique_id]_vars;
+  @li APILIB.[ds_unique_id]_grps;
+  @li APILIB.[ds_unique_id]_geos;
+  @li APILIB.[ds_unique_id]_exmpls
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
 
 %MACRO censusapi_getDsFullInfo(p_apiListingLibName=APILIB
 , p_apiListingDsName=_API_ALL_DATA
@@ -131,9 +134,9 @@
 		WHERE _ROWID_ = &p_dsRowId;
 	QUIT;
 
-	%let l_outGoesDsName   = &p_apiListingLibName..&l_outDsPrefix._geos;
-	%let l_outGrpsDsName   = &p_apiListingLibName..&l_outDsPrefix._grps;
 	%let l_outVarsDsName   = &p_apiListingLibName..&l_outDsPrefix._vars;
+	%let l_outGrpsDsName   = &p_apiListingLibName..&l_outDsPrefix._grps;
+	%let l_outGoesDsName   = &p_apiListingLibName..&l_outDsPrefix._geos;
 	%let l_outExmplsDsName = &p_apiListingLibName..&l_outDsPrefix._exmpls;
 
 	SYSECHO "Calling the censusapi_getDsFullInfo macro to get the Variables info of the specified data set";
