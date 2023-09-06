@@ -1,28 +1,23 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	05/27/2022
- ******************************************************
- */
-
 /**
- ******************************************************
- * Returns system generated _ROWID_ and unique_Ds_ID 
- * values for the specified API Base URL .
- * <br><br>Usage Example:<br>
- * %GLOBAL g_rowId g_uniqueId;
- * %util_getDsIdValues(p_apiBaseUrl=http://api.census.gov/data/1986/cbp 
- *	,p_rtrnRowIDMacVarName=g_rowId 
- *	,p_rtrnUniqueIDMacVarName=g_uniqueId)<br>
- *
- * @param p_registryDsName Registration Data Set name. Default:APILIB._API_ALL_DATA
- * @param p_apiBaseUrl	API Base URL for the registered data set
- * @param p_rtrnRowIDMacVarName	Macro variable name to hold the 
- *				associated _ROWID_ value
- * @param p_rtrnUniqueIDMacVarName Macro variable name to hold the 
- *				   associated ds_unique_id value
- ******************************************************
- */
+  @file censusapi_getgrpvars.sas
+  @brief Returns system generated _ROWID_ and unique_Ds_ID
+  @details
+  Returns system generated _ROWID_ and unique_Ds_ID values for the specified API Base URL.
+
+      Usage Example:
+      %GLOBAL g_rowId g_uniqueId;
+      %util_getDsIdValues(p_apiBaseUrl=http://api.census.gov/data/1986/cbp 
+        , p_rtrnRowIDMacVarName=g_rowId, p_rtrnUniqueIDMacVarName=g_uniqueId)
+
+  @param [in] p_registryDsName= Registration Data Set name. Default:APILIB._API_ALL_DATA
+  @param [in] p_apiBaseUrl= API Base URL for the registered data set
+  @param [in] p_rtrnRowIDMacVarName= Macro variable name to hold the associated _ROWID_ value
+  @param [in] p_rtrnUniqueIDMacVarName= Macro variable name to hold the associated ds_unique_id value
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
 
 %MACRO util_getDsIdValues(p_registryDsName=APILIB._API_ALL_DATA ,p_apiBaseUrl= ,p_rtrnRowIDMacVarName= ,p_rtrnUniqueIDMacVarName=);
 

@@ -1,28 +1,26 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/19/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Parses the Data API query examples illustrated in the 
-* specified examples.html file into SAS Data Set,
-* using PROC HTTP and data step processing.
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getDsExamples(p_outDsName=WORK._ds_examples
-* , p_examplesHtmlURL=%str(http://api.census.gov/data/1999/nonemp/examples.html))
-* <br>
-*
-* @param p_outDsName	The output data set name. Required
-* @param p_examplesHtmlURL	The Examples HTML URL. Required
-******************************************************
-*/
+  @file censusapi_getdsexamples.sas
+  @brief Parses the Data API query examples illustrated in the specified examples.html
+  @details
+  Parses the Data API query examples illustrated in the specified examples.html file into SAS Data Set
+  using PROC HTTP and data step processing.
 
-%MACRO censusapi_getDsExamples(p_outDsName=WORK._ds_examples
-, p_examplesHtmlURL=);
+      Usage Example:
+      %censusapi_getDsExamples(p_outDsName=WORK._ds_examples
+        , p_examplesHtmlURL=%str(http://api.census.gov/data/1999/nonemp/examples.html))
+
+  @param [in] p_examplesHtmlURL= The Examples HTML URL. Required
+  @param [in] p_outDsName= The output data set name. Required
+
+  <h4> SAS Macros </h4>
+  @li etl_shrinkmydata.sas
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
+
+%MACRO censusapi_getDsExamples(p_outDsName=, p_examplesHtmlURL=);
 
 	%LOCAL
 		l_sTime

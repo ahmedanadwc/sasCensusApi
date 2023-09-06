@@ -1,37 +1,33 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/19/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Parses the Variables Metadata stored in the specified 
-* variables.json file into SAS Data Set and Formats,
-* using PROC HTTP and JSON Library engine.
-* Once the Variables data set in created, it's used to 
-* dynamically create the following formats for variables
-* manipulations 
-* - $_xxx_vRename. : Used for renaming the variables
-* - $_xxx_vCnvrt.  : Used for Type Conversion from char to num
-* - $_xxx_vLbl.    : Used for Assigning variables labels 
-*
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getDsVars(p_outDsName=APILIB._799_DEC_2000_vars
-* , p_varFmtNamePreFix=_799_DEC_2000
-* , p_varsJsonURL=http://api.census.gov/data/2000/dec/sf1/variables.json
-* , p_outVarFmtLibName=APILIB)
-* <br>
-*
-* @param p_outDsName	The output data set name. Required
-* @param p_varsJsonURL	The Variables JSON URL. Required
-* @param p_varFmtNamePreFix	Internal Data set Unique ID. Required 
-* @param p_outVarFmtLibName Libname to store Variables Formats. 
-*							Default:WORK. Required
-******************************************************
-*/
+  @file censusapi_getdsvars.sas
+  @brief Parses the Variables Metadata stored in the specified variables.json file
+  @details
+  Parses the Variables Metadata stored in the specified variables.json file 
+  into SAS Data Set and Formats using PROC HTTP and JSON Library engine.
+  Once the Variables data set in created, it's used to dynamically create the 
+  following formats for variables manipulations 
+  - $_xxx_vRename. : Used for renaming the variables
+  - $_xxx_vCnvrt.  : Used for Type Conversion from char to num
+  - $_xxx_vLbl.    : Used for Assigning variables labels 
+
+      Usage Example:
+      %censusapi_getDsVars(p_outDsName=APILIB._799_DEC_2000_vars
+        , p_varFmtNamePreFix=_799_DEC_2000
+        , p_varsJsonURL=http://api.census.gov/data/2000/dec/sf1/variables.json
+        , p_outVarFmtLibName=APILIB)
+
+  @param [in] p_outDsName= The output data set name. Required
+  @param [in] p_varsJsonURL= The Variables JSON URL. Required
+  @param [in] p_varFmtNamePreFix= Internal Data set Unique ID. Required 
+  @param [in] p_outVarFmtLibName= Libname to store Variables Formats. Default:WORK. Required
+
+  <h4> SAS Macros </h4>
+  @li etl_shrinkmydata.sas
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
 
 %MACRO censusapi_getDsVars(p_outDsName=
 , p_varsJsonURL=

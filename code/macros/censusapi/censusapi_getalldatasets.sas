@@ -1,34 +1,28 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/14/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Parses the Data sets Metadata stored in the specified 
-* data.json file into SAS Data Set and generate an Excel
-* workbook, using PROC HTTP and JSON Library engine.
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getalldatasets(p_outLibName=APILIB
-* , p_outDsName=_api_all_data
-* , p_dataJsonURL=%str(https://api.census.gov/data.json)
-* , p_reportOutputPath=&g_outputRoot)
-*
-* <br>
-*
-* @param p_outLibName	The output Library name. 
-*			Default:APILIB. Required
-* @param p_outDsName	The output data set name.
-*			Default:_api_all_data. Required
-* @param p_dataJsonURL	The Data API Data JSON File.
-*			Default:https://api.census.gov/data.json. Required
-* @param p_reportOutputPath The output pathname.
-*			Default:&g_outputRoot. Required
-******************************************************
-*/
+  @file censusapi_getalldatasets.sas
+  @brief Parses the Data sets Metadata stored in the specified data.json file
+  @details
+  Parses the Data sets Metadata stored in the specified data.json file into SAS 
+  Data Set and generate an Excel workbook, using PROC HTTP and JSON Library engine.
+
+      Usage Example:
+      %censusapi_getalldatasets(p_outLibName=APILIB
+      , p_outDsName=_api_all_data
+      , p_dataJsonURL=%str(https://api.census.gov/data.json)
+      , p_reportOutputPath=&g_outputRoot)
+
+  @param [in] p_outLibName= The output Library name. Default:APILIB. Required
+  @param [in] p_outDsName= The output data set name. Default:_api_all_data. Required
+  @param [in] p_dataJsonURL= The Data API Data JSON File. Default:https://api.census.gov/data.json. Required
+  @param [in] p_reportOutputPath= The output pathname. Default:&g_outputRoot. Required
+
+  <h4> SAS Macros </h4>
+  @li etl_shrinkmydata.sas
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
 
 %MACRO censusapi_getAllDataSets(p_outLibName=APILIB
 , p_outDsName=_api_all_data

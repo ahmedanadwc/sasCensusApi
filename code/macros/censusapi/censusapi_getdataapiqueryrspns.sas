@@ -1,40 +1,28 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/21/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Extracts requested information from the Census Data
-* API, using HTTPS requests and parsing the returned
-* JSON response into SAS Data Set.
-*
-* Note: This macro assumes variables metadata for the specified
-*       data set has been collected, and its related SAS Formats
-*		have been created alreay! 
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getDataApiQueryRspns(
-* p_queryURL=%NRSTR(https://api.census.gov/data/2000/dec/sf1?
-*get=P010014,P010015,P010010,P010011,P010012,P010013,P010003,P010004
-*,P010005,P010006,P010001,P010002,P010007,P010008,P010009
-*,NAME&for=zip%20code%20tabulation%20area%20(3%20digit)%20(or%20part):*
-*&in=state:09,23,25,33,44,50,34,36,42,17)
-, p_varFmtNamePreFix=_799_dec_2000
-, p_outDsName=WORK._response_)
-*
-* <br>
-* @param p_queryURL			The Data API Full query URL. Required
-* @param p_varFmtNamePreFix	Internal Data set Unique ID. Required 
-* @param p_outDsName		The output data set name. Required
-******************************************************
-*/
+  @file censusapi_getdataapiqueryrspns.sas
+  @brief Extracts requested information from the Census Data API
+  @details
+  Extracts requested information from the Census Data API, using HTTPS requests 
+  and parses the returned JSON response into SAS data set.
+  Note: This macro assumes variables metadata for the specified data set has been collected,
+  and its related SAS Formats have been created alreay! 
 
-%MACRO censusapi_getDataApiQueryRspns(p_queryURL=
-, p_varFmtNamePreFix=
-, p_outDsName=);
+      Usage Example:
+      %censusapi_getDataApiQueryRspns(
+        p_queryURL=%NRSTR(https://api.census.gov/data/2000/dec/sf1?get=P010014,P010015,P010010,P010011,P010012,P010013,P010003,P010004
+        ,P010005,P010006,P010001,P010002,P010007,P010008,P010009,NAME&for=zip%20code%20tabulation%20area%20(3%20digit)%20(or%20part):*
+        &in=state:09,23,25,33,44,50,34,36,42,17), p_varFmtNamePreFix=_799_dec_2000, p_outDsName=WORK._response_)
+
+  @param [in] p_queryURL= The Data API Full query URL. Required
+  @param [in] p_varFmtNamePreFix= Internal Data set Unique ID. Required 
+  @param [in] p_outDsName= The output data set name. Required
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
+
+%MACRO censusapi_getDataApiQueryRspns(p_queryURL=, p_varFmtNamePreFix=, p_outDsName=);
 
 	%LOCAL	
 		l_sTime

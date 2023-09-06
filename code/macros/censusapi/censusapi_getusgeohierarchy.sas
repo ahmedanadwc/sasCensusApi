@@ -1,22 +1,21 @@
-/*!
- ******************************************************
- * @author	Ahmed Al-Attar
- * @created	04/18/2022
- ******************************************************
- */
-
 /**
-******************************************************
-* Creates a standard Census US GeoHierarchy data set, 
-* that contains Census defined Regions and Divisions
-*
-* <br><br>Usage Example:<br>
-* %censusapi_getUsGeoHierarchy(p_outDsName=work.test_query)
-* <br>
-*
-* @param p_outDsName	The output data set name. Required
-******************************************************
-*/
+  @file censusapi_getusgeohierarchy.sas
+  @brief Creates a standard Census US GeoHierarchy data set that contains 
+  Census defined Regions and Divisions
+  @details
+  Creates a standard Census US GeoHierarchy data set that contains 
+  Census defined Regions and Divisions based on info found in 
+  https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf
+
+      Usage Example:
+      %censusapi_getUsGeoHierarchy(p_outDsName=work.test_query)
+
+  @param [in] p_outDsName= The output data set name. Required
+
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
 
 %MACRO censusapi_getUsGeoHierarchy(p_outDsName=);
 	/* Based on info found in https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf */
