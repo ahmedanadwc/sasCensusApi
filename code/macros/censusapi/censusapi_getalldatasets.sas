@@ -122,7 +122,7 @@
 		FORMAT ordinal_dataset BEST8.;
 
 		SET &l_libref..DATASET(DROP=ordinal_root _type accesslevel temporal identifier license
-									c_documentationlink c_tagsLink c_sorts_url );
+									c_documentationlink c_tagsLink c_sorts_url);
 		LENGTH
 			Aggregate_i Cube_i Available_i Timeseries_i Microdata_i $1;
 
