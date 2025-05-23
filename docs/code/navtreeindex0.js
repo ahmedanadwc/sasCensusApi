@@ -35,8 +35,11 @@ var NAVTREEINDEX0 =
 "files.html":[0],
 "index.html":[],
 "pages.html":[],
+"setup_8sas.html":[0,1,0],
 "setup_8sas_source.html":[0,1,0],
+"step1-_build___data_api_collection_8sas.html":[0,0,1,0],
 "step1-_build___data_api_collection_8sas_source.html":[0,0,1,0],
+"step2-_submit_data_api_query_8sas.html":[0,0,1,1],
 "step2-_submit_data_api_query_8sas_source.html":[0,0,1,1],
 "util__getdsidvalues_8sas.html":[0,0,0,2,0],
 "util__getdsidvalues_8sas_source.html":[0,0,0,2,0]

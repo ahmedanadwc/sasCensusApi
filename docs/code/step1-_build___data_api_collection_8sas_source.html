@@ -111,13 +111,27 @@ $(function(){initNavTree('step1-_build___data_api_collection_8sas_source.html','
   <div class="headertitle"><div class="title">step1-Build_DataApiCollection.sas</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>SYSECHO <span class="stringliteral">&quot;Calling the censusapi_getalldatasets macro to get the latest list/collection of available tables under the Census Data API&quot;</span>;</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/* Get the latest list of available tables under the Census Data API */</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>%censusapi_getalldatasets(p_outLibName=APILIB</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>, p_outDsName=_API_ALL_DATA</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>, p_dataJsonURL=%str(https:<span class="comment">//api.census.gov/data.json)</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>, p_reportOutputPath=&amp;g_outputRoot)</div>
+<a href="step1-_build___data_api_collection_8sas.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">  @file step1-Build_DataApiCollection.sas</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">  @brief Illustrates how to build a collection of all available tables under the Census Data API</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"></span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">  &lt;h4&gt; SAS Macros &lt;/h4&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">  @li censusapi_getalldatasets.sas</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"></span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">  &lt;h4&gt; Related Programs &lt;/h4&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> </span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">  @version SAS 9.4</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">  @author Ahmed Al-Attar</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">**/</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>SYSECHO <span class="stringliteral">&quot;Calling the censusapi_getalldatasets macro to get the latest list/collection of available tables under the Census Data API&quot;</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/* Get the latest list of available tables under the Census Data API */</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>%censusapi_getalldatasets(p_outLibName=APILIB</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>, p_outDsName=_API_ALL_DATA</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>, p_dataJsonURL=%str(https:<span class="comment">//api.census.gov/data.json)</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>, p_reportOutputPath=&amp;g_outputRoot)</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.17-->
@@ -125,7 +139,7 @@ $(function(){initNavTree('step1-_build___data_api_collection_8sas_source.html','
 <div id="nav-path" class="navpath">
   <!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_050edd66366d13764f98250ef6db77f6.html">code</a></li><li class="navelem"><a class="el" href="dir_d4e10fc70e6a8de2401274992603303f.html">programs</a></li><li class="navelem"><b>step1-Build_DataApiCollection.sas</b></li>
+    <li class="navelem"><a class="el" href="dir_050edd66366d13764f98250ef6db77f6.html">code</a></li><li class="navelem"><a class="el" href="dir_d4e10fc70e6a8de2401274992603303f.html">programs</a></li><li class="navelem"><a class="el" href="step1-_build___data_api_collection_8sas.html">step1-Build_DataApiCollection.sas</a></li>
     <li class="footer">
       Generated by
       <a href="https://www.doxygen.org/index.html">
