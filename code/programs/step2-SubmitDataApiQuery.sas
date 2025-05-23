@@ -1,3 +1,19 @@
+/**
+  @file step2-SubmitDataApiQuery.sas
+  @brief Illustrates the steps to submit a Census Data API query and generate a SAS data set out of it
+
+  <h4> SAS Macros </h4>
+  @li util_getdsidvalues.sas
+  @li censusapi_getdsfullinfo.sas
+  @li censusapi_submitdataapiquery.sas
+
+  <h4> Related Programs </h4>
+ 
+  @version SAS 9.4
+  @author Ahmed Al-Attar
+
+**/
+
 %GLOBAL 
 	g_dsRowId
 	g_dsUniqueId
