@@ -1,5 +1,5 @@
 /**
-  @file censusapi_getgrpvars.sas
+  @file util_getdsidvalues.sas
   @brief Returns system generated _ROWID_ and unique_Ds_ID
   @details
   Returns system generated _ROWID_ and unique_Ds_ID values for the specified API Base URL.
