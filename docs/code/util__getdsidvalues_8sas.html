@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <meta name="generator" content="Doxygen 1.12.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>sasCensusApi: code/macros/censusapi/censusapi_getdsfullinfo.sas File Reference</title>
+    <title>sasCensusApi: code/macros/util/util_getdsidvalues.sas File Reference</title>
     <meta name="description" content="Custom built SAS macro programs to extract data from the public Census Data API. These out of the box custom built SAS macro programs atreamline data acquisition and manipulation. They use the metadata supplied by the Census Data API registration to dynamically derive column type conversion and label assignments. As a minimum, Base SAS Software, version 9.4 Maintenance 4 installation is required to run these macros." />
     <link href="tabs.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="jquery.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('censusapi__getdsfullinfo_8sas.html',''); initResizable(true); });
+$(function(){initNavTree('util__getdsidvalues_8sas.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -108,53 +108,32 @@ $(function(){initNavTree('censusapi__getdsfullinfo_8sas.html',''); initResizable
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">censusapi_getdsfullinfo.sas File Reference</div></div>
+  <div class="headertitle"><div class="title">util_getdsidvalues.sas File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Extracts required JSON &amp; HTML URLs associated with the specified Data set RowID from the collected tables Metadata data set.  
+<p>Returns system generated <em>ROWID</em> and unique_Ds_ID.  
 <a href="#details">More...</a></p>
 
-<p><a href="censusapi__getdsfullinfo_8sas_source.html">Go to the source code of this file.</a></p>
+<p><a href="util__getdsidvalues_8sas_source.html">Go to the source code of this file.</a></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Extracts required JSON &amp; HTML URLs associated with the specified Data set RowID from the collected tables Metadata data set. Once these URLs are extracted, it calls relevent macros to parse out the data and generate</p><ul>
-<li>Variables Metadata data set</li>
-<li>Geographies data set</li>
-<li><p class="startli">Examples data set Then an Excel Workbook is generated containing listing of these newly created SAS data sets.</p>
-<p class="startli">Usage Example: censusapi_getDsFullInfo(p_apiListingLibName=APILIB, p_apiListingDsName=_API_ALL_DATA, p_dsRowId=3)</p>
-</li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
+<div class="textblock"><p>Returns system generated <em>ROWID</em> and unique_Ds_ID values for the specified API Base URL. </p><pre class="fragment">Usage Example:
+%GLOBAL g_rowId g_uniqueId;
+%util_getDsIdValues(p_apiBaseUrl=http://api.census.gov/data/1986/cbp 
+  , p_rtrnRowIDMacVarName=g_rowId, p_rtrnUniqueIDMacVarName=g_uniqueId)
+</pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">p_apiListingLibName=</td><td>The Libname holding the Datasets Metadata table. Default:APILIB. Required </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p_apiListingDsName=</td><td>The collected tables Metadata data set name. Default:_api_all_data. Required </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p_dsRowId=</td><td>The <em>ROWID</em> value of the desired data set. Required </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p_reportOutputPath=</td><td>The output pathname. Default:&amp;g_outputRoot. Required</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p_registryDsName=</td><td>Registration Data Set name. Default:APILIB._API_ALL_DATA </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p_apiBaseUrl=</td><td>API Base URL for the registered data set </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p_rtrnRowIDMacVarName=</td><td>Macro variable name to hold the associated <em>ROWID</em> value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p_rtrnUniqueIDMacVarName=</td><td>Macro variable name to hold the associated ds_unique_id value</td></tr>
   </table>
   </dd>
 </dl>
-<h4>SAS Macros </h4>
-<ul>
-<li><a class="el" href="censusapi__getdsvars_8sas.html" title="Parses the Variables Metadata stored in the specified variables.json file.">censusapi_getdsvars.sas</a> </li>
-<li><a class="el" href="censusapi__getdsgroups_8sas.html" title="Parses the Groups Metadata stored in the specified groups.json file.">censusapi_getdsgroups.sas</a> </li>
-<li><a class="el" href="censusapi__getdsgeos_8sas.html" title="Parses the Data API query geographies illustrated in the specified geography.json file.">censusapi_getdsgeos.sas</a> </li>
-<li><a class="el" href="censusapi__getdsexamples_8sas.html" title="Parses the Data API query examples illustrated in the specified examples.html.">censusapi_getdsexamples.sas</a></li>
-</ul>
-<h4>Data Inputs </h4>
-<ul>
-<li>APILIB._API_ALL_DATA</li>
-</ul>
-<h4>Data Outputs </h4>
-<ul>
-<li>APILIB.[ds_unique_id]_vars; </li>
-<li>APILIB.[ds_unique_id]_grps; </li>
-<li>APILIB.[ds_unique_id]_geos; </li>
-<li>APILIB.[ds_unique_id]_exmpls</li>
-</ul>
 <dl class="section version"><dt>Version</dt><dd>SAS 9.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Ahmed Al-Attar </dd></dl>
 
-<p class="definition">Definition in file <a class="el" href="censusapi__getdsfullinfo_8sas_source.html">censusapi_getdsfullinfo.sas</a>.</p>
+<p class="definition">Definition in file <a class="el" href="util__getdsidvalues_8sas_source.html">util_getdsidvalues.sas</a>.</p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.17-->
@@ -162,7 +141,7 @@ $(function(){initNavTree('censusapi__getdsfullinfo_8sas.html',''); initResizable
 <div id="nav-path" class="navpath">
   <!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_050edd66366d13764f98250ef6db77f6.html">code</a></li><li class="navelem"><a class="el" href="dir_8299b97efaa0c531d43464ca9378858c.html">macros</a></li><li class="navelem"><a class="el" href="dir_942055c7697e45f0aca7cdcdb7ab5a03.html">censusapi</a></li><li class="navelem"><a class="el" href="censusapi__getdsfullinfo_8sas.html">censusapi_getdsfullinfo.sas</a></li>
+    <li class="navelem"><a class="el" href="dir_050edd66366d13764f98250ef6db77f6.html">code</a></li><li class="navelem"><a class="el" href="dir_8299b97efaa0c531d43464ca9378858c.html">macros</a></li><li class="navelem"><a class="el" href="dir_71c0e04cac9fd4b7e5b659661a0f6e03.html">util</a></li><li class="navelem"><a class="el" href="util__getdsidvalues_8sas.html">util_getdsidvalues.sas</a></li>
     <li class="footer">
       Generated by
       <a href="https://www.doxygen.org/index.html">
