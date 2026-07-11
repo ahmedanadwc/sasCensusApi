@@ -1,0 +1,7 @@
+{
+  "bundle": "t001_censusapi_getusgeohierarchy",
+  "source_file": "code/macros/censusapi/censusapi_getusgeohierarchy.sas",
+  "source_blob_sha": "b2f295b92990bc54e5dbf0db4c6ae09f99a36f20",
+  "source_commit": "87d6fb4ac9fb4679c2bd9e6f7e91308b77fced29",
+  "notes": "censusapi_getUsGeoHierarchy.sas builds a Census-region/division lookup table from SAS's supplied MAPS.US2 dataset. The macro definition is byte-identical to the repo's copy; the only edit is FROM MAPS.US2 -> FROM WORK.US2 (MAPS.US2 isn't available on Jenner's hosted sandbox), with a small WORK.US2 stand-in carrying the same three columns the macro reads (state, statename, statecode) for 12 states covering all four Census regions and all nine divisions, inlined at the top of script.sas so the bundle is fully self-contained (runnable via script.sas alone, no autoexec dependency -- autoexec.sas here only sets options obs=100). Caller matches the macro's own docblock usage example (%censusapi_getUsGeoHierarchy(p_outDsName=work.test_query))."
+}

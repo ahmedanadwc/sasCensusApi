@@ -1,0 +1,7 @@
+{
+  "bundle": "t002_util_getdsidvalues",
+  "source_file": "code/macros/util/util_getdsidvalues.sas",
+  "source_blob_sha": "8ff2d8bd2d6367f0e7ea080dfc11cae738bf8449",
+  "source_commit": "87d6fb4ac9fb4679c2bd9e6f7e91308b77fced29",
+  "notes": "util_getDsIdValues.sas looks up the _ROWID_ and ds_unique_id for a given Census API base URL from the registry table censusapi_getAllDataSets.sas normally builds live. The macro is shipped byte-identical (no edits at all -- it has no external HTTP/JSON dependency of its own). autoexec.sas builds a small WORK._api_all_data stand-in with the 3 columns the macro reads (_ROWID_, ds_unique_id, BaseURL), and the caller matches the macro's own docblock usage example."
+}

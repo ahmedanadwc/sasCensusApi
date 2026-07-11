@@ -1,0 +1,13 @@
+{
+  "_captured_at": "2026-07-11T00:00:00Z",
+  "_captured_run_id": "r_178b0d0cbf1648eba3b306f9416be18b",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Macro variable G_DSUNIQUEID = _1_dec2000sf1",
+    "NOTE: Macro variable G_DSROWID = 1",
+    "Resolved dataset row: _ROWID_=1  ds_unique_id=_1_dec2000sf1"
+  ],
+  "log_does_not_contain": ["ERROR:", "[JENNER-ERROR"],
+  "diagnostics": {"parse_warnings": [], "runtime_warnings": []}
+}

@@ -1,0 +1,24 @@
+
+NOTE: Option OBS changed to 100.
+NOTE: DATA work._api_all_data
+
+NOTE: Processing inline DATALINES (4 lines)
+
+NOTE: Read 4 rows from DATALINES.
+NOTE: Wrote work._api_all_data (4 rows, 3 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC SQL 
+
+NOTE: Macro variable G_DSUNIQUEID = _1_dec2000sf1
+NOTE: Macro variable G_DSROWID = 1
+NOTE: PROC SQL statement used.
+NOTE: DATA _null_
+
+Resolved dataset row: _ROWID_=1  ds_unique_id=_1_dec2000sf1
+
+NOTE: Wrote _null_ (0 rows, 0 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds

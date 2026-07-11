@@ -1,0 +1,14 @@
+{
+  "_captured_at": "2026-07-11T00:00:00Z",
+  "_captured_run_id": "r_673ef8f7ab8f4f4a836dd8a8f8775fba",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: FORMAT $CENSUSREGION defined (4 ranges).",
+    "NOTE: FORMAT $CENSUSDIVISION defined (9 ranges).",
+    "NOTE: Table work.geo_hierarchy created.",
+    "NOTE: PROC PRINT completed: 12 observations printed, 6 variables"
+  ],
+  "log_does_not_contain": ["ERROR:", "[JENNER-ERROR"],
+  "diagnostics": {"parse_warnings": [], "runtime_warnings": []}
+}

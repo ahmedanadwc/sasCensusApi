@@ -1,0 +1,16 @@
+
+  Obs  Census Region  Census Region Name  Census Division  Census Division Name  State Fips Code       Name of State
+-----  -------------  ------------------  ---------------  --------------------  ---------------  ------------------
+    1  1              1                   1                1                     09               Connecticut (CT)
+    2  1              1                   1                1                     23               Maine (ME)
+    3  1              1                   1                1                     25               Massachusetts (MA)
+    4  1              1                   2                2                     34               NewJersey (NJ)
+    5  2              2                   3                3                     17               Illinois (IL)
+    6  2              2                   4                4                     19               Iowa (IA)
+    7  3              3                   5                5                     10               Delaware (DE)
+    8  3              3                   6                6                     01               Alabama (AL)
+    9  3              3                   7                7                     05               Arkansas (AR)
+   10  4              4                   8                8                     04               Arizona (AZ)
+   11  4              4                   8                8                     08               Colorado (CO)
+   12  4              4                   9                9                     06               California (CA)
+
