@@ -1,10 +1,11 @@
-/**
+﻿/**
   @file etl_shrinkmydata.sas
   @brief Shrinks the input data set and saves it as the output data set.
   @details
   Shrinks the input data set by reducing the variables lengths to fit the largest value found in all the records.
 
-      Usage Example:
+  Example usage:
+
       %etl_shrinkMyData(p_inDsName=SASHELP.PRDSALE, p_outDsName=WORK.TEST, p_noCompress=)
 
   @param [in] p_inDsName= Two level data set name to be shrinked
@@ -220,7 +221,7 @@
     PROC SQL NOPRINT;
       SELECT  
          CATX(' ',NAME,ifc(type=2,'$',''),LENGTH)
-        ,CATX(' ',NAME,CATS(FORMAT,CATX('.',FORMATL,FORMATD)))
+        ,CATX(' ',NAME,CATS(FORMAT,ifc(FORMATL > 0,cats(put(FORMATL,best.),'.'),'.'),ifc(FORMATD > 0,put(FORMATD,best.),'')) )
         ,CATS(NAME,"='",LABEL,"'")
       INTO    
          :l_lenStmt separated by ' '
@@ -230,6 +231,8 @@
       ORDER BY varnum
       ;
     QUIT;
+
+	PROC DELETE DATA=WORK._CNTNTS2_; RUN;
 
   %end; /* (%superq(l_noCompress) NE ) */
 
@@ -276,7 +279,7 @@
     LENGTH  str $200 newLenMacVar $32 spr $1;
     LENGTH  lenStr $50 frmtStr $70 lblStr $300 intoStr $35 num_name $40;
 
-    FILE tmpFile LRECL=600;
+    FILE tmpFile LRECL=32767;
 
     CALL SYMPUTX('l_totObs',nobs);
 
@@ -438,14 +441,14 @@
         PUT;
         PUT 'PROC SUMMARY DATA=lengths_view NWAY; ';
         PUT +3 'VAR l_v: ; ';
-        PUT +3 'OUTPUT OUT=max_lengths(DROP=_:) MAX= ; ';
+        PUT +3 'OUTPUT OUT=max_lengths(DROP=_type_ _freq_) MAX= ; ';
         PUT 'RUN; ';
         PUT;
         PUT 'DATA _NULL_; ';
         PUT +3 "SET max_lengths; ";
         PUT +3 "ARRAY lvs {*} 8 l_v:; ";
         PUT +3 "DO v=1 to DIM(lvs);";
-        PUT +6 "CALL SYMPUTX(CATS('l_v',v), lvs[v]);";
+        PUT +6 "CALL SYMPUTX(VNAME(lvs[v]), lvs[v]);";
         PUT +3 "END; ";
         PUT 'RUN; ';
         PUT;
@@ -546,7 +549,7 @@
     end; /* End - (last) */
   RUN;
 
-  %include tmpFile / lrecl=600;
+  %include tmpFile / lrecl=32767;
   %goto finished;
 
   %exit:
