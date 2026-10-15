@@ -106,4 +106,6 @@ LIBNAME apilib "&g_projRootPath.&g_slash.data";
 OPTIONS FMTSEARCH=(WORK apilib);
 
 /* Generate Census Bureau-designated regions and divisions Goegraphy Hierarchy Lookup table */
-%censusapi_getUsGeoHierarchy(p_outDsName=apilib.Census_reg_div_lkup)
+%if (%sysfunc(exist(apilib.Census_reg_div_lkup)) EQ 0) %then %do;
+	%censusapi_getUsGeoHierarchy(p_outDsName=apilib.Census_reg_div_lkup);
+%end;
