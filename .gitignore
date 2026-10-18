@@ -7,3 +7,6 @@
 /graft/
 .github/instructions/codacy.instructions.md
 enhancement-recommendations.md
+/data
+/output
+custom_debugg.sas
