@@ -58,6 +58,7 @@
 	%LOCAL
 		l_outDsLib
 		l_outDsName
+		l_apiGetClause
 		l_getVars
 		l_varsCount
 		l_apiForClause
@@ -65,7 +66,7 @@
 		l_dataApiKey
 		;
 
-	* Record Starting Time;
+	/* Record Starting Time */
 	%let l_sTime = %sysfunc(time());
 
 	/********** BEGIN -- Macro Parameter Validation **********/
@@ -94,22 +95,10 @@
 		%goto exit;
 	%end;
 
-	/*
-	%if (%superq(p_apiInClause) EQ ) %then
-	%do;
-	*/
-		/* Missing p_apiInClause value in macro call */
-	/*
-		%let l_rc  = 4;
-		%let l_msg = ERROR: censusapi_submitDataApiQuery: p_apiInClause is invalid. Please specify non-missing value;
-		%goto exit;
-	%end;
-	*/
-
 	%if (%superq(p_dsUniqueId) EQ ) %then
 	%do;
 		/* Missing p_dsUniqueId value in macro call */
-		%let l_rc  = 5;
+		%let l_rc  = 4;
 		%let l_msg = ERROR: censusapi_submitDataApiQuery: p_dsUniqueId is invalid. Please specify non-missing value;
 		%goto exit;
 	%end;
@@ -117,7 +106,7 @@
 	%if (%superq(p_outDsName) EQ ) %then
 	%do;
 		/* Missing p_outDsName value in macro call */
-		%let l_rc  = 6;
+		%let l_rc  = 5;
 		%let l_msg = ERROR: censusapi_submitDataApiQuery: p_outDsName is invalid. Please specify non-missing value;
 		%goto exit;
 	%end;
@@ -138,17 +127,19 @@
 
 	/********** END -- Macro Parameter Validation **********/
 
-	%let l_getVars    = %SCAN(%superq(p_apiGetClause),2,%STR(=));
-	%let l_varsCount  = %EVAL(%SYSFUNC(COUNTC(%SUPERQ(l_getVars),%STR(,))) +1);
-	%let l_dataApiKey = ;
-	/*%put &=l_varsCount;*/
-
+	%let l_apiGetClause = %sysfunc(compbl(%superq(p_apiGetClause)));
+	%let l_getVars      = %SCAN(%superq(p_apiGetClause),2,%STR(=));
+	%let l_varsCount    = %EVAL(%SYSFUNC(COUNTC(%SUPERQ(l_getVars),%STR(,))) +1);
+	%let l_dataApiKey   =;
 	%let l_apiForClause =;
-	%let l_apiInClause=;
+	%let l_apiInClause  =;
 
-	%let l_apiForClause = %SYSFUNC(TRANWRD(%SUPERQ(p_apiForClause),%STR(%(),%NRSTR(%%%() ));
+	/* Need to mask the white space and convert it to %20 */
+	%if (%superq(p_apiForClause) NE ) %then
+		%let l_apiForClause = %Qsysfunc(TRANWRD(%SUPERQ(p_apiForClause),%STR( ),%STR(%%20)));
+
 	%if (%superq(p_apiInClause) NE ) %then
-		%let l_apiInClause  = %SYSFUNC(TRANWRD(%SUPERQ(p_apiInClause),%STR(%(),%NRSTR(%%%() ));
+		%let l_apiInClause = %Qsysfunc(TRANWRD(%SUPERQ(p_apiInClause),%STR( ),%STR(%%20)));
 
 	%if (%SUPERQ(p_dataApiKey) NE ) %then
 		%let l_dataApiKey = %str(key=&p_dataApiKey);
@@ -158,18 +149,15 @@
 	DATA _NULL_;
 		FILE queries LRECL=32000;
 		LENGTH 
-			urlBase $1000 
+			urlBase $2000
 			urlGet $28000 
-			urlTail $3000
 			;
 
-		urlBase = "&p_apiBaseURL";
-		urlTail = STRIP('&'||CATX('&',"%superq(p_apiForClause)","%superq(p_apiInClause)","%superq(l_dataApiKey)"));
+		urlBase = STRIP("&p_apiBaseURL");
 
 	%if (&l_varsCount GT &p_maxVarCount) %then
 	%do;
 		%let l_chunkCount= %SYSFUNC(ceil(&l_varsCount/&p_maxVarCount));
-		/* %put &=l_chunkCount; */
 
 		%do c=1 %to %eval(&l_chunkCount - 1);
 			%let l_var = %SCAN(%SUPERQ(l_getVars),%eval(&p_maxVarCount+1),%STR(,));
@@ -180,7 +168,9 @@
 
 			PUT '%censusapi_getDataApiQueryRspns(' ;
 			urlGet = 'get='||"%SUPERQ(l_chunk)";
-			PUT '  p_queryURL=%NRSTR(' urlBase +(-1) urlGet +(-1) urlTail +(-1) ')' ;
+			PUT '  p_queryURL=%NRSTR(' urlBase +(-1) urlGet @;
+			link urlTail;
+			PUT ')' ;
 			PUT ", p_varFmtNamePreFix=&p_dsUniqueId" ;
 			PUT ", p_outDsName=WORK._response_&c)" ;
 		%end;
@@ -188,21 +178,33 @@
 		/* %put &=l_chunk; */
 		PUT '%censusapi_getDataApiQueryRspns(' ;
 		urlGet = 'get='||"%SUPERQ(l_chunk)";
-		PUT '  p_queryURL=%NRSTR(' urlBase +(-1) urlGet +(-1) urlTail +(-1) ')' ;
+		PUT '  p_queryURL=%NRSTR(' urlBase +(-1) urlGet @;
+		link urlTail;
+		PUT ')' ;
 		PUT ", p_varFmtNamePreFix=&p_dsUniqueId" ;
 		PUT ", p_outDsName=WORK._response_&c)" ;
 	%end;
 	%else 
 	%do;
 		PUT '%censusapi_getDataApiQueryRspns(' ;
-		PUT '  p_queryURL=%NRSTR(' urlBase +(-1) "&p_apiGetClause" urlTail +(-1) ')' ;
+		PUT '  p_queryURL=%NRSTR(' urlBase +(-1) "&p_apiGetClause" @;
+		link urlTail;
+		PUT ')' ;
 		PUT ", p_varFmtNamePreFix=&p_dsUniqueId" ;
 		PUT ", p_outDsName=WORK._response_)" ;
 	%end;
+	STOP;
+	/* Compose the URL Tail*/
+	urlTail:
+		PUT "%STR(&)&l_apiForClause" @;
+		if("&l_apiInClause" NE "") THEN
+			PUT "%STR(&)&l_apiInClause" @;
+		PUT "%STR(&)&l_dataApiKey" @;
+	return;
 	RUN;
 
 	/* Run the generated chunked API queries */
-	%INCLUDE queries;
+	%INCLUDE queries ;
 
 	/* Compose the Final Outout Data set */
 	%if (&l_varsCount GT &p_maxVarCount) %then
@@ -222,7 +224,7 @@
 	%end;
 	%else 
 	%do;
-	PROC APPEND BASE=&p_outDsName DATA=WORK._response_; 
+	PROC APPEND BASE=&p_outDsName DATA=WORK._response_ FORCE; 
 	RUN;
 	%end;
 
@@ -230,9 +232,9 @@
 
 	%exit:
 		%PUT *** ERROR: censusapi_submitDataApiQuery  ***;
-		%PUT *** l_RC must be zero (0).   ***;
-		%PUT *** l_RC= &l_RC    .         ***;
-		%PUT &l_MSG ;
+		%PUT *** l_rc must be zero (0).   ***;
+		%PUT *** l_rc= &l_rc    .         ***;
+		%PUT &l_msg ;
 		%PUT *** ERROR: censusapi_submitDataApiQuery  ***;
 
 	%finished:

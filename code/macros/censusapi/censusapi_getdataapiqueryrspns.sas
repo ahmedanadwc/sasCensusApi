@@ -41,7 +41,7 @@
 		l_newVar
 		;
 
-	* Record Starting Time;
+	/* Record Starting Time */
 	%let l_sTime = %sysfunc(time());
 
 	/********** BEGIN -- Macro Parameter Validation **********/
@@ -98,7 +98,7 @@
 		%end;
 	%MEND inner_checkProcHttpReturn;
 
-	%let l_httpErrorFlag = 0; *<-- Default to false;
+	%let l_httpErrorFlag = 0; /* <-- Default to false */
 	%let l_renameVars =;
 	%let l_outKeepVars =;
 
@@ -211,9 +211,9 @@
 
 	%exit:
 		%PUT *** ERROR: censusapi_getDataApiQueryRspns  ***;
-		%PUT *** l_RC must be zero (0).   ***;
-		%PUT *** l_RC= &l_RC    .         ***;
-		%PUT *** &l_MSG ***;
+		%PUT *** l_rc must be zero (0).   ***;
+		%PUT *** l_rc= &l_rc    .         ***;
+		%PUT *** &l_msg ***;
 		%PUT *** ERROR: censusapi_getDataApiQueryRspns  ***;
 
 	%finished:
