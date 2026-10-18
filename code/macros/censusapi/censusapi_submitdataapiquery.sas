@@ -1,4 +1,4 @@
-/**
+﻿/**
   @file censusapi_submitdataapiquery.sas
   @brief Submits queries which inturn parses out the returned 
   JSON response into SAS data sets
@@ -167,7 +167,7 @@
 			/*%put &=l_var &=l_vPos &=l_chunk &=l_getVars;*/
 
 			PUT '%censusapi_getDataApiQueryRspns(' ;
-			urlGet = 'get='||"%SUPERQ(l_chunk)";
+			urlGet = STRIP('get='||"%SUPERQ(l_chunk)");
 			PUT '  p_queryURL=%NRSTR(' urlBase +(-1) urlGet @;
 			link urlTail;
 			PUT ')' ;
@@ -177,7 +177,7 @@
 		%let l_chunk = &l_getVars;
 		/* %put &=l_chunk; */
 		PUT '%censusapi_getDataApiQueryRspns(' ;
-		urlGet = 'get='||"%SUPERQ(l_chunk)";
+		urlGet = STRIP('get='||"%SUPERQ(l_chunk)");
 		PUT '  p_queryURL=%NRSTR(' urlBase +(-1) urlGet @;
 		link urlTail;
 		PUT ')' ;
@@ -187,7 +187,7 @@
 	%else 
 	%do;
 		PUT '%censusapi_getDataApiQueryRspns(' ;
-		PUT '  p_queryURL=%NRSTR(' urlBase +(-1) "&p_apiGetClause" @;
+		PUT '  p_queryURL=%NRSTR(' urlBase +(-1) "&p_apiGetClause " @;
 		link urlTail;
 		PUT ')' ;
 		PUT ", p_varFmtNamePreFix=&p_dsUniqueId" ;
@@ -196,7 +196,7 @@
 	STOP;
 	/* Compose the URL Tail*/
 	urlTail:
-		PUT "%STR(&)&l_apiForClause" @;
+		PUT +(-1) "%STR(&)&l_apiForClause" @;
 		if("&l_apiInClause" NE "") THEN
 			PUT "%STR(&)&l_apiInClause" @;
 		PUT "%STR(&)&l_dataApiKey" @;

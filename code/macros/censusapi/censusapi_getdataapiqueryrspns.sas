@@ -1,4 +1,4 @@
-/**
+﻿/**
   @file censusapi_getdataapiqueryrspns.sas
   @brief Extracts requested information from the Census Data API
   @details
@@ -134,28 +134,32 @@
 		SET qryvals.root(OBS=1);
 
 		ARRAY vars {*} $ _character_;
-		LENGTH v_name varFmt $32 v_value $200;
+		LENGTH v_name varFmt $32 v_value v_valueT $200;
 		varFmt = COMPRESS("$&p_varFmtNamePreFix._vRename");
 
 		do v=1 to dim(vars);
 			v_name=vname(vars(v));
-			v_value=UPCASE(vvalue(vars(v)));
-			mod=0;
-
+			v_value=STRIP(vvalue(vars(v)));
 			/* Checks the validity of a character string for use as a SAS variable name */
+			/* Use NLITERAL for none V7 compatible names */
 			if (NVALID(v_value,'v7') = 0) then
 			do;
-				mod=1;
-				v_value = SUBSTR(translate(v_value,'_','(','_',' '),1,32);
-				v_value = PUTC(STRIP(v_value),STRIP(varFmt));
+				v_value=STRIP(TRANWRD(v_value,'(OR PART)',''));
+				v_valueT=PUTC(STRIP(LOWCASE(v_value)),STRIP("$&p_varFmtNamePreFix._vName"));
+				v_value = ifc(STRIP(v_valueT) = '--Unknown--',v_value,STRIP(v_valueT));
 			end;
-			CALL SYMPUT('l_outKeepVars',CATX(' ',symget('l_outKeepVars'),STRIP(v_value)));
+
+			/* Cater for */
+			if (NVALID(v_value,'v7') = 0) then
+				v_value="'"||STRIP(v_value)||"'n";
+
+			CALL SYMPUT('l_outKeepVars',CATX('-:-',symget('l_outKeepVars'),STRIP(v_value)));
 
 			/* Check for Special renaming due to required Type Conversion */
-			if (mod=0) then
-				v_value = PUTC(STRIP(v_value),STRIP(varFmt));
+			if (NVALID(v_value,'v7') = 1) then
+				v_value = PUTC(STRIP(UPCASE(v_value)),STRIP(varFmt));
 
-			CALL SYMPUT('l_renameVars',CATX(' ',symget('l_renameVars'),CATX('=',STRIP(v_name),STRIP(v_value))));
+			CALL SYMPUT('l_renameVars',CATX('-:-',symget('l_renameVars'),CATX('=',STRIP(v_name),STRIP(v_value))));
 		end;
 
 		CALL SYMPUTX('l_vCount',dim(vars));
@@ -174,35 +178,44 @@
 	 * 2. Utilize the populated macros to generate
 	 *    the required output data set
 	 --------------------------------------------- */
-	DATA &p_outDsName(KEEP=&l_outKeepVars);
+	DATA &p_outDsName(KEEP=%SYSFUNC(TRANWRD(%SUPERQ(l_outKeepVars),%str(-:-),%str( ))));
 		LENGTH varFmt varFmt2 $32;
 		varFmt  = COMPRESS("$&p_varFmtNamePreFix._vCnvrt");
 		varFmt2 = COMPRESS("$&p_varFmtNamePreFix._vLbl");
 
 		SET qryvals.root(FIRSTOBS=2
-				RENAME=(&l_renameVars));
+				RENAME=(%SYSFUNC(TRANWRD(%SUPERQ(L_RENAMEVARS),%str(-:-),%str( )))));
 
 		/* Perform all required Type Conversions, if any */
 		%do l_v=1 %to &l_vCount;
-			%let l_var=%SCAN(%SUPERQ(l_outKeepVars),&l_v,%str( ));
+			%let l_var=%SCAN(%SUPERQ(l_outKeepVars),&l_v,%str(-:-));
 			%let l_var=%UPCASE(&l_var);
-			%let l_newVar=%SYSFUNC(PUTC(&l_var,$&p_varFmtNamePreFix._vCnvrt.));
-
-			 /*%put >>> &=l_var &=l_newVar;*/
-
-			%if (%SUPERQ(l_var) NE %SUPERQ(l_newVar)) %then
+			%if (%SYSFUNC(NVALID(&l_var,v7)) = 1) %then
 			%do;
-				%str(&l_newVar)
+				%let l_newVar=%SYSFUNC(PUTC(&l_var,$&p_varFmtNamePreFix._vCnvrt.));
+				/*%put >>> &=l_var &=l_newVar;*/
+				%if (%SUPERQ(l_var) NE %SUPERQ(l_newVar)) %then
+				%do;
+					%str(&l_newVar)
+				%end;
 			%end;
 		%end;
 
 		/* Assign Variable Labels */
 		LABEL
 		%do l_v=1 %to &l_vCount;
-			%let l_var=%SCAN(%SUPERQ(l_outKeepVars),&l_v,%str( ));
-			%let l_lbl=%QSYSFUNC(PUTC(&l_var,$&p_varFmtNamePreFix._vLbl.));
-			%let l_lbl=%QSYSFUNC(STRIP(&l_lbl));
-			%STR(&l_var = %"&l_lbl%")
+			%let l_var=%SCAN(%SUPERQ(l_outKeepVars),&l_v,%str(-:-));
+			%if (%SYSFUNC(NVALID(&l_var,v7)) = 1) %then
+			%do;
+				%let l_lbl=%QSYSFUNC(PUTC(&l_var,$&p_varFmtNamePreFix._vLbl.));
+				%let l_lbl=%QSYSFUNC(STRIP(&l_lbl));
+				%STR(&l_var = %'&l_lbl%')
+			%end;
+			%else
+			%do;
+				%let l_lbl= %QSYSFUNC(SUBSTR(%SUPERQ(l_var),1,%EVAL(%LENGTH(&l_var)-1)));
+				%STR(&l_var = &l_lbl)
+			%end;
 		%end;
 		;
 	RUN;

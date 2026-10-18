@@ -1,4 +1,4 @@
-/**
+﻿/**
   @file censusapi_getdsvars.sas
   @brief Parses the Variables Metadata stored in the specified variables.json file
   @details
@@ -213,8 +213,33 @@
 			OUTPUT;
 		end;
 	RUN;
+	
+	/* Add extra step to translate Label into variable name */
+	/* Needed for Geography levels/variables */
+	DATA WORK.cntrl2(KEEP=FMTNAME TYPE START LABEL HLO);
+		LENGTH FMTNAME $32 TYPE $1 START $256 LABEL $32;
+		FORMAT START $256. FMTNAME LABEL $32.;
+
+		SET _tmp_ds_vars_T(RENAME=(name=fmtlabel label=fmtstart) 
+			WHERE=(STRIP(predicateType) = '')) end=eof;
+		RETAIN TYPE 'C';
+		START = STRIP(LOWCASE(fmtstart));
+		LABEL = STRIP(fmtlabel);
+		FMTNAME = "&p_varFmtNamePreFix._vName";
+		OUTPUT;
+		if (eof) then 
+		do;
+		 start =' ';
+		 end = ' ';
+		 label='--Unknown--';
+		 hlo='O';
+		 OUTPUT;
+		end;
+	RUN;
+
 	PROC SORT DATA=WORK.cntrl; BY FMTNAME; RUN;
 	PROC FORMAT LIB=&p_outVarFmtLibName CNTLIN=WORK.cntrl; RUN;
+	PROC FORMAT LIB=&p_outVarFmtLibName CNTLIN=WORK.cntrl2; RUN;
 
 	%goto finished;
 
@@ -230,7 +255,7 @@
 		LIBNAME apivars CLEAR;
 		FILENAME apivarsf;
 		PROC DATASETS LIB=WORK NOLIST; 
-			DELETE _tmp_ds_vars_ cntrl /MT=DATA; 
+			DELETE _tmp_ds_vars_ cntrl cntrl2 /MT=DATA; 
 		QUIT;
 		%let l_eTime=%sysfunc(time());
 		%let l_rTime=%sysfunc(putn(%sysevalf(&l_eTime - &l_sTime),time12.2));
