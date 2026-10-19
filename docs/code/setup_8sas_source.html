@@ -219,7 +219,9 @@ $(function(){initNavTree('setup_8sas_source.html',''); initResizable(true); });
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>OPTIONS FMTSEARCH=(WORK apilib);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">/* Generate Census Bureau-designated regions and divisions Goegraphy Hierarchy Lookup table */</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>%censusapi_getUsGeoHierarchy(p_outDsName=apilib.Census_reg_div_lkup)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>%<span class="keywordflow">if</span> (%sysfunc(exist(apilib.Census_reg_div_lkup)) EQ 0) %then %<span class="keywordflow">do</span>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  %censusapi_getUsGeoHierarchy(p_outDsName=apilib.Census_reg_div_lkup);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>%end;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.17-->
