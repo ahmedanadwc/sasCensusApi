@@ -220,7 +220,7 @@
 		LENGTH FMTNAME $32 TYPE $1 START $256 LABEL $32;
 		FORMAT START $256. FMTNAME LABEL $32.;
 
-		SET _tmp_ds_vars_T(RENAME=(name=fmtlabel label=fmtstart) 
+		SET &l_outDsName(RENAME=(name=fmtlabel label=fmtstart) 
 			WHERE=(STRIP(predicateType) = '')) end=eof;
 		RETAIN TYPE 'C';
 		START = STRIP(LOWCASE(fmtstart));
