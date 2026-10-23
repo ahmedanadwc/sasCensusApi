@@ -39,6 +39,7 @@
 		l_var
 		l_lbl
 		l_newVar
+		l_unknownVars
 		;
 
 	/* Record Starting Time */
@@ -140,6 +141,7 @@
 		do v=1 to dim(vars);
 			v_name=vname(vars(v));
 			v_value=STRIP(vvalue(vars(v)));
+
 			/* Checks the validity of a character string for use as a SAS variable name */
 			/* Use NLITERAL for none V7 compatible names */
 			if (NVALID(v_value,'v7') = 0) then
@@ -147,12 +149,23 @@
 				v_value=STRIP(TRANWRD(v_value,'(OR PART)',''));
 				v_valueT=PUTC(STRIP(LOWCASE(v_value)),STRIP("$&p_varFmtNamePreFix._vName"));
 				v_value = ifc(STRIP(v_valueT) = '--Unknown--',v_value,STRIP(v_valueT));
+
+				if (NVALID(v_value,'v7') = 0) then
+				do;
+					CALL SYMPUT(STRIP(v_name),STRIP(vvalue(vars(v))));
+					CALL SYMPUT('l_unknownVars',CATX('-:-',symget('l_unknownVars'),STRIP(v_name)));
+					v_value = STRIP(v_name);
+				end;
 			end;
-
-			/* Cater for */
-			if (NVALID(v_value,'v7') = 0) then
-				v_value="'"||STRIP(v_value)||"'n";
-
+	
+			/* Cater for duplicate column names */
+			/*put v_value=;*/
+			if (indexw(symget('l_outKeepVars'),STRIP(v_value),'-:-') > 0) then
+			do;
+				CALL SYMPUT(STRIP(v_name),STRIP(vvalue(vars(v))));
+				CALL SYMPUT('l_unknownVars',CATX('-:-',symget('l_unknownVars'),STRIP(v_name)));
+				v_value=STRIP(v_name);
+			end;
 			CALL SYMPUT('l_outKeepVars',CATX('-:-',symget('l_outKeepVars'),STRIP(v_value)));
 
 			/* Check for Special renaming due to required Type Conversion */
@@ -160,7 +173,7 @@
 				v_value = PUTC(STRIP(UPCASE(v_value)),STRIP(varFmt));
 
 			CALL SYMPUT('l_renameVars',CATX('-:-',symget('l_renameVars'),CATX('=',STRIP(v_name),STRIP(v_value))));
-		end;
+		end; /* End - do v=1 to dim(vars) */
 
 		CALL SYMPUTX('l_vCount',dim(vars));
 	RUN;
@@ -169,6 +182,7 @@
 	/*
 	%put &=l_renameVars;
 	%put &=l_outKeepVars;
+	%put &=l_unknownVars;
 	%put &=l_vCount;
 	*/
 
@@ -209,6 +223,9 @@
 			%do;
 				%let l_lbl=%QSYSFUNC(PUTC(&l_var,$&p_varFmtNamePreFix._vLbl.));
 				%let l_lbl=%QSYSFUNC(STRIP(&l_lbl));
+				%if(%symexist(&l_var)) %then
+					%let l_lbl=%QSYSFUNC(STRIP(%SUPERQ(&l_var)));
+
 				%STR(&l_var = %'&l_lbl%')
 			%end;
 			%else
